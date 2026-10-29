@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>תנאי פיילוט | כסף בקטנה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@700;900&family=Assistant:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #173B2D; --ink-2: #2F5B48; --muted: #4F6F5E; --paper: #DCE6D9; --paper-2: #BFD0C0;
+    --card: #EEF3EC; --under: #9DB6A3; --coin: #A68D52; --light: #F3F7F1; --err: #8A3A22;
+    --head: "Frank Ruhl Libre", serif; --body: "Assistant", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--body); color: var(--ink); font-size: 18px; line-height: 1.6;
+    background: linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%) fixed; }
+  .wrap { width: min(560px, 100% - 32px); margin: 24px auto 48px; }
+  .micro { overflow: hidden; white-space: nowrap; font-size: 9px; letter-spacing: .08em; padding: 6px 0; opacity: .55; }
+  .micro::before { content: "כסף בקטנה · סדר בבית · שקט בכיס · כסף בקטנה · סדר בבית · שקט בכיס · כסף בקטנה · סדר בבית · שקט בכיס · כסף בקטנה · סדר בבית · שקט בכיס · כסף בקטנה · סדר בבית · שקט בכיס"; }
+  .brand { display: flex; align-items: center; gap: 10px; margin: 10px 0 18px; }
+  .brand svg { width: 40px; height: 40px; }
+  .brand b { font-family: var(--head); font-size: 24px; line-height: 1; display: block; }
+  .brand small { font-size: 13px; color: var(--muted); }
+  .note { background: radial-gradient(120% 140% at 85% 10%, var(--ink-2) 0%, var(--ink) 60%); color: var(--light);
+    border-radius: 18px; padding: 30px 26px; position: relative; }
+  .note::after { content: ""; position: absolute; inset: 8px; border: 1px solid rgba(220,230,217,.22); border-radius: 12px; pointer-events: none; }
+  .denom { font-family: var(--head); font-weight: 900; font-size: 64px; line-height: 1; }
+  h1 { font-family: var(--head); font-size: 32px; line-height: 1.15; margin: 6px 0 10px; }
+  .note p { margin: 0 0 8px; color: #DCE6D9; }
+  .note ul { margin: 10px 0 0; padding-inline-start: 20px; color: #E3ECE0; }
+  form, .done { background: var(--card); border: 1px solid var(--paper-2); border-radius: 18px; padding: 26px; margin-top: 16px; }
+  .field { margin-bottom: 14px; }
+  label { display: block; font-weight: 700; font-size: 16px; margin-bottom: 6px; }
+  label .opt { font-weight: 400; color: var(--muted); font-size: 14px; }
+  input, select { width: 100%; font: 18px var(--body); color: var(--ink); background: #fff;
+    border: 1.5px solid var(--under); border-radius: 10px; padding: 12px 14px; }
+  input[type=tel], input[type=email] { direction: ltr; text-align: right; }
+  input[aria-invalid=true] { border-color: var(--err); }
+  input:focus-visible, select:focus-visible, button:focus-visible { outline: 3px solid var(--coin); outline-offset: 3px; }
+  .err { font-size: 14px; color: var(--err); margin-top: 4px; }
+  .hp { position: absolute; inset-inline-start: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  button { width: 100%; font: 700 19px var(--body); color: var(--light); background: var(--ink); border: 0; border-radius: 999px; padding: 15px; cursor: pointer; }
+  button[disabled] { opacity: .6; cursor: wait; }
+  .privacy { font-size: 13px; color: var(--muted); margin: 12px 0 0; }
+  .formerr { background: #F6E7E1; color: var(--err); border-radius: 10px; padding: 10px 14px; font-size: 15px; margin-bottom: 14px; }
+  .done { text-align: center; }
+  .stamp { width: 92px; height: 92px; margin: 0 auto 14px; border-radius: 50%; display: grid; place-items: center;
+    border: 3px double var(--ink); font-family: var(--head); font-weight: 900; font-size: 17px; transform: rotate(-8deg); }
+  .done h2 { font-family: var(--head); margin: 0 0 6px; }
+  .done p { color: var(--muted); margin: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="micro" aria-hidden="true"></div>
+  <div class="brand">
+    <svg viewBox="0 0 100 100" aria-hidden="true"><g transform="translate(0,4)"><path d="M21.65 57.30H31.00Q35.85 57.30 39.27 60.73Q42.70 64.15 42.70 69.00V83.30H48.64V88.70H11.00V83.30H37.30V69.00Q37.30 66.39 35.45 64.55Q33.61 62.70 31.00 62.70H13.50V57.30H13.76L50.26 23.03Q52.11 21.30 53.96 23.03L87.70 54.72V76.00Q87.70 81.26 83.98 84.98Q80.26 88.70 75.00 88.70H56.74V83.30H75.00Q78.02 83.30 80.16 81.16Q82.30 79.02 82.30 76.00V62.70H61.00V57.30H82.30V57.05L52.11 28.70Z" fill="#173B2D"/><circle cx="52.11" cy="50.06" r="4" fill="#A68D52"/></g></svg>
+    <span><b>כסף בקטנה</b><small>כלכלת משפחה</small></span>
+  </div>
+
+  <div class="note">
+    <div class="denom">5</div>
+    <h1>מקומות בתנאי פיילוט</h1>
+    <p>לחמשת הראשונים שנרשמים כאן תוך 48 שעות מסיום הוובינר, לפי שעת ההרשמה.</p>
+    <ul>
+      <li>שיחת היכרות קודם: חינם, בלי התחייבות</li>
+      <li>בשיחה: מכירים, בודקים אם זה מתאים לכם, ומדברים על התנאים</li>
+      <li>גם אם לא תמשיכו - תצאו ממנה עם סדר עדיפויות אחד ברור</li>
+    </ul>
+  </div>
+
+  <div id="box">
+    <form id="f" novalidate>
+      <div class="formerr" id="formerr" role="alert" hidden></div>
+      <div class="field">
+        <label for="name">שם</label>
+        <input id="name" name="name" autocomplete="name" required maxlength="60">
+        <div class="err" id="name-err"></div>
+      </div>
+      <div class="field">
+        <label for="phone">טלפון <span class="opt">- אחזור אליכם לתיאום</span></label>
+        <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="20" placeholder="05X-XXX-XXXX">
+        <div class="err" id="phone-err"></div>
+      </div>
+      <div class="field">
+        <label for="email">מייל <span class="opt">(לא חובה)</span></label>
+        <input id="email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="120">
+        <div class="err" id="email-err"></div>
+      </div>
+      <div class="field">
+        <label for="when">מתי הכי נוח שאתקשר?</label>
+        <select id="when" name="when">
+          <option>ערב (אחרי 20:00)</option>
+          <option>צהריים</option>
+          <option>בוקר</option>
+          <option>שישי בבוקר</option>
+        </select>
+      </div>
+      <div class="hp" aria-hidden="true"><label for="website">אתר</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+      <button type="submit" id="submit">שריינו לנו מקום</button>
+      <p class="privacy">הפרטים משמשים רק כדי לחזור אליכם בנושא הפיילוט. הם לא מועברים לאף אחד. למחיקה - <a target="_top" href="mailto:kesefbaktana@gmail.com">kesefbaktana@gmail.com</a>.</p>
+    </form>
+  </div>
+</div>
+
+<script>
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbwTWPUSWSpEtkrH4cupTNwM8gPDAJY2zkhk3wMKOewjiMjVVNCeFaq0RHAswlQBdNzJqg/exec";
+// מקור: ?src= בכתובת (GitHub Pages), או הזרקה של doGet כשמוגש מ-Apps Script. ברירת מחדל: webinar
+const source = (new URLSearchParams(location.search).get("src") || "__SRC__".replace(/^__SRC__$/, "") || "webinar").slice(0, 40);
+
+const f = document.getElementById("f");
+const rules = {
+  name: v => v.trim().length >= 2 || "איך קוראים לכם?",
+  phone: v => /^0\d{1,2}-?\d{3}-?\d{4}$/.test(v.replace(/\s/g, "")) || "מספר ישראלי, למשל 054-123-4567",
+  email: v => !v.trim() || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) || "המייל לא נראה תקין"
+};
+function check(n) {
+  const el = f.elements[n], r = rules[n](el.value), ok = r === true;
+  el.setAttribute("aria-invalid", ok ? "false" : "true");
+  document.getElementById(n + "-err").textContent = ok ? "" : r;
+  return ok;
+}
+Object.keys(rules).forEach(n => f.elements[n].addEventListener("blur", () => f.elements[n].value && check(n)));
+
+f.addEventListener("submit", async e => {
+  e.preventDefault();
+  const bad = Object.keys(rules).filter(n => !check(n));
+  if (bad.length) { f.elements[bad[0]].focus(); return; }
+  if (f.elements.website.value) return;
+  const btn = document.getElementById("submit"), ferr = document.getElementById("formerr");
+  btn.disabled = true; btn.textContent = "שולח..."; ferr.hidden = true;
+  const body = new URLSearchParams({
+    form: "pilot",
+    name: f.elements.name.value.trim(),
+    phone: f.elements.phone.value.trim(),
+    email: f.elements.email.value.trim(),
+    when: f.elements.when.value,
+    source
+  });
+  try {
+    const r = await fetch(ENDPOINT, { method: "POST", body });
+    const j = await r.json();
+    if (!j.ok) throw new Error(j.error || "failed");
+    const box = document.getElementById("box");
+    box.innerHTML = '<div class="done" tabindex="-1"><div class="stamp">נרשמתם</div><h2></h2><p>אחזור אליכם בטלפון לתאם שיחת היכרות. שעת ההרשמה נשמרה.</p></div>';
+    box.querySelector("h2").textContent = "תודה, " + body.get("name") + ".";
+    box.querySelector(".done").focus();
+  } catch (err) {
+    btn.disabled = false; btn.textContent = "שריינו לנו מקום";
+    ferr.textContent = "משהו לא עבד בשליחה. נסו שוב, או כתבו ל-kesefbaktana@gmail.com.";
+    ferr.hidden = false;
+  }
+});
+</script>
+</body>
+</html>
