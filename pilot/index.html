@@ -110,6 +110,16 @@ const ENDPOINT = "https://script.google.com/macros/s/AKfycbwTWPUSWSpEtkrH4cupTNw
 // מקור: ?src= בכתובת (GitHub Pages), או הזרקה של doGet כשמוגש מ-Apps Script. ברירת מחדל: webinar
 const source = (new URLSearchParams(location.search).get("src") || "__SRC__".replace(/^__SRC__$/, "") || "webinar").slice(0, 40);
 
+// אחרי 48 השעות (pilotUntil מהסקריפט) הטופס נסגר, כדי שאף קישור ישן לא יבטיח תנאי פיילוט
+fetch(ENDPOINT + "?api=config").then(r => r.json()).then(c => {
+  if (!c.pilotUntil || Date.now() <= c.pilotUntil) return;
+  document.querySelector(".note h1").textContent = "תנאי הפיילוט נסגרו";
+  document.querySelector(".note p").textContent = "תודה על ההתעניינות. אפשר עדיין לקבוע שיחת היכרות - חינם, בלי התחייבות.";
+  document.querySelector(".note ul").remove();
+  document.querySelector(".denom").remove();
+  document.getElementById("box").innerHTML = '<div class="done"><p>כתבו לי ל-<a target="_top" href="mailto:kesefbaktana@gmail.com">kesefbaktana@gmail.com</a> או ל-054-326-3131, ונקבע.</p></div>';
+}).catch(() => {});
+
 const f = document.getElementById("f");
 const rules = {
   name: v => v.trim().length >= 2 || "איך קוראים לכם?",

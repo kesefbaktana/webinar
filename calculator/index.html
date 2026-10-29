@@ -199,7 +199,7 @@ bdi{unicode-bidi:isolate}
 
   <div class="foot">
     <p>מספר אחד לא ברור? כתבו לי הודעה באינסטגרם, ואגיד לכם איך מחשבים אותו: <a class="ig" href="https://instagram.com/kesefbaktana" target="_blank" rel="noopener" dir="ltr">@kesefbaktana</a>. את המספרים עצמם אל תשלחו לי.</p>
-    <p>רוצים לעבור על זה ביחד? יש שיחת היכרות של 20 דקות, בלי התחייבות. כתבו לי הודעה באינסטגרם.</p>
+    <p id="ctaCall">רוצים לעבור על זה ביחד? יש שיחת היכרות של 20 דקות, בלי התחייבות. כתבו לי הודעה באינסטגרם.</p>
     <p>עובדים במחשב? <a class="ig" href="kesef-baktana-calculator.xlsx" download>הורדת הגרסה לאקסל</a>, עם אותם שלבים.</p>
     <div class="sign">וזה, בקטנה.</div>
     <p class="small">תוכן כללי ללמידה. לא ייעוץ משכנתאות, לא ייעוץ פיננסי אישי, לא ייעוץ מס, לא הצעה ולא אישור של בנק, ולא המלצה על בנק או מוצר. החישוב רץ רק בדפדפן שלכם. הנתונים נשמרים רק במכשיר הזה (אם הדפדפן מאפשר), ואפשר למחוק אותם בכפתור "ניקוי". <bdi dir="ltr">kesefbaktana@gmail.com</bdi> · גרסה 2</p>
@@ -542,6 +542,14 @@ function firstStatus(today, first) {
     $("saveNote").textContent = msg;
   }
 
+  // הגיע ממייל המתנה למי שלא הסכים לדיוור: בלי הזמנה לשיחה (חוק התקשורת 30א)
+  // הגיע ממייל ההמשך עם הסכמה: ההזמנה לשיחה מובילה לטופס הפיילוט, כמו במייל
+  try {
+    var QS = new URLSearchParams(location.search), SRC = QS.get("src"), UNTIL = Number(QS.get("until"));
+    if (SRC === "gift") $("ctaCall").style.display = "none";
+    // רק עד שהפיילוט נסגר. אחרי זה - ההזמנה הרגילה
+    if (SRC === "followup" && UNTIL && Date.now() < UNTIL) $("ctaCall").innerHTML = 'רוצים לעבור על זה ביחד? <a class="ig" href="../pilot/?src=followup">השאירו פרטים לשיחת היכרות</a> - 20 דקות, בלי התחייבות.';
+  } catch (err) {}
   buildMonths();
   buildSteps();
   load();
