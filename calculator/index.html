@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>כמה החזר נוח לנו? · כסף בקטנה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;800&family=Frank+Ruhl+Libre:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--g:#173B2D;--g2:#24503D;--g3:#2F5B48;--sage:#8CA695;--sagel:#DCE4D8;--paper:#F1F5EF;--gold:#A68D52;--warn:#8A3B2E;--in:#FFF6DA}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--g);font-family:Assistant,Arial,sans-serif;font-size:17px;line-height:1.5}
+.wrap{max-width:560px;margin:0 auto;padding:16px 16px 48px}
+.micro{font-size:9px;letter-spacing:.08em;color:var(--sage);white-space:nowrap;overflow:hidden;border-top:1px solid var(--sage);border-bottom:1px solid var(--sage);padding:2px 0;margin:8px 0}
+h1{font-family:"Frank Ruhl Libre",serif;font-weight:900;font-size:34px;line-height:1.1;margin-top:10px}
+.sub{color:var(--g2);font-weight:600;margin-top:4px}
+.lead{margin-top:10px}
+.disc{font-size:13px;color:var(--g2);margin-top:8px;font-weight:600}
+h2{font-family:"Frank Ruhl Libre",serif;font-size:22px;margin:26px 0 8px;display:flex;align-items:center;gap:8px}
+h2 .n{font-family:Assistant;font-size:14px;font-weight:800;background:var(--g);color:var(--paper);border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+fieldset{border:1px solid var(--sagel);background:#fff;border-radius:12px;padding:6px 14px 12px;margin-bottom:12px}
+legend{font-weight:800;padding:0 6px;color:var(--g2)}
+label{display:block;margin-top:10px;font-weight:600}
+.hint{display:block;font-size:13px;color:#5b6b62;font-weight:400}
+input,select{width:100%;margin-top:4px;font:inherit;font-size:18px;padding:10px 12px;border:1px solid var(--sage);border-radius:10px;background:var(--in);color:var(--g);direction:ltr;text-align:right}
+input:focus,select:focus{outline:2px solid var(--g3);outline-offset:1px}
+.row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.row2>*{min-width:0}
+/* זוג שדות בשורה: התוויות באורך שונה, אז השדה נדחף לתחתית - שני השדות באותו גובה */
+.row2>label{display:flex;flex-direction:column}
+.row2>label>input,.row2>label>select{margin-top:auto}
+.row2>label>.hint{margin-bottom:4px}
+.row3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.row3 input{font-size:16px;padding:9px 8px}
+.cat{margin-top:12px}
+.cat .t{font-weight:700}
+.cat .avg{font-size:14px;color:var(--g2);margin-top:3px}
+.fed{font-size:13px;color:var(--g3);font-weight:700}
+p,.x,.hint,.note,label,.gap{text-wrap:pretty}
+input,select{min-width:0}
+html,body{overflow-x:hidden}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 4px}
+button{font:inherit;font-weight:800;font-size:16px;padding:11px 16px;border-radius:999px;border:1.5px solid var(--g);background:transparent;color:var(--g);cursor:pointer}
+button.pri{background:var(--g);color:var(--paper)}
+.note{font-size:14px;color:var(--g2);margin-top:6px;min-height:1em}
+.card{background:#fff;border:1px solid var(--sagel);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.card.key{border:2px solid var(--g3);background:#FAFCF9}
+.card .t{font-weight:800}
+.card .v{font-family:"Frank Ruhl Libre",serif;font-weight:900;font-size:30px;line-height:1.2;margin-top:2px}
+.card.big .v{font-size:40px}
+.card.txt .v{font-size:19px;line-height:1.35}
+.warn{color:var(--warn);font-weight:700}
+.gap div{margin-top:2px}
+.sub{text-wrap:balance}
+a.ig{color:var(--g3);font-weight:700;text-decoration:underline}
+bdi{white-space:nowrap}
+.card.range .v{font-size:26px}
+/* רוחב קבוע: התווית מתחלפת בלחיצה בלי להזיז את הכפתורים. השורה עדיין נשברת אם אין מקום */
+#btnClear{width:9.5em;padding-left:8px;padding-right:8px}
+#fallback{font-family:inherit;font-size:15px;min-height:380px;padding:10px;border:1px solid var(--sage);border-radius:10px}
+.gnote{font-size:12px;color:#5b6b62;margin-top:6px}
+.card .x{font-size:14px;color:#4f5f56;margin-top:4px}
+.neg{color:var(--warn)}
+.empty{color:var(--g2);font-size:15px;font-weight:600;background:#fff;border:1.5px dashed var(--sage);border-radius:12px;padding:10px 14px}
+.star{color:var(--gold)}
+.month{background:#fff;border:1px solid var(--sagel);border-radius:12px;padding:8px 14px 12px;margin-bottom:10px}
+.month .gap{margin-top:8px;font-weight:700}
+details{background:#fff;border:1px solid var(--sagel);border-radius:12px;padding:10px 14px;margin-top:10px}
+summary{font-weight:800;cursor:pointer}
+details p,details li{font-size:14px;margin-top:6px}
+details ul{padding-inline-start:18px}
+.foot{margin-top:26px;font-size:15px}
+.foot p{margin-top:8px}
+.sign{font-family:"Frank Ruhl Libre",serif;font-weight:900;font-size:28px;margin-top:14px}
+.small{font-size:13px;color:#5b6b62;margin-top:12px}
+bdi{unicode-bidi:isolate}
+#fallback{display:none;width:100%;min-height:180px;margin-top:8px;font-size:14px;direction:rtl;text-align:right}
+#printout{display:none}
+@page{size:A4;margin:14mm}
+@media print{
+  body{background:#fff;font-size:16pt}
+  .wrap{max-width:none;padding:0}
+  .wrap > *:not(#printout){display:none !important}
+  #printout{display:block}
+  #printout h1{font-size:30pt}
+  #printout table{width:100%;border-collapse:collapse;margin-top:10px}
+  #printout td{border-bottom:1px solid #bbb;padding:8px 4px;font-size:16pt;vertical-align:top}
+  #printout td.num{text-align:left;white-space:nowrap;font-weight:700}
+  #printout h3{margin-top:18px;font-size:19pt}
+  #printout .small{font-size:12pt}
+  #printout .sign{font-size:24pt}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="micro">כסף בקטנה · סדר בבית · שקט בכיס · כסף בקטנה · סדר בבית · שקט בכיס · כסף בקטנה · סדר בבית · שקט בכיס</div>
+  <h1>כמה החזר נוח לנו?</h1>
+  <div class="sub">מחשבון לזוגות לפני דירה ראשונה<br>מאלישיב, איש כספים בתאגיד</div>
+  <p class="lead">הבנק בודק כמה תוכלו להחזיר. המחשבון הזה בודק כמה יהיה לכם נוח להחזיר, ומה זה אומר על מחיר הדירה.</p>
+  <p class="disc">להמחשה בלבד. לא ייעוץ משכנתאות, לא ייעוץ פיננסי ולא ייעוץ מס. 20 דקות, שניכם, עם דפי החשבון של 3 החודשים האחרונים.</p>
+  <div class="btns">
+    <button type="button" id="btnExample">מלאו דוגמה להמחשה</button>
+    <button type="button" id="btnClear">ניקוי</button>
+  </div>
+  <div class="note" id="exampleNote"></div>
+
+  <h2><span class="n">0</span>שלושת הצעדים</h2>
+  <p>מהוובינר "לאן הולך הכסף שלכם?". מה שממלאים כאן עובר לבד לחלק 1: ההוצאות, שכר הדירה והחיסכון. לא הייתם בוובינר? אפשר לדלג ולמלא את חלק 1 ישירות.</p>
+  <div id="steps"></div>
+
+  <h2><span class="n">1</span>הנתונים שלכם</h2>
+  <fieldset>
+    <legend>הכנסות</legend>
+    <div class="row2">
+      <label>נטו בחודש, אחד מכם<span class="hint">ממוצע 6 חודשים, בלי בונוסים</span><input id="incA" inputmode="numeric" autocomplete="off"></label>
+      <label>נטו בחודש, השני<span class="hint">הכנסה אחת? משאירים ריק</span><input id="incB" inputmode="numeric" autocomplete="off"></label>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>הוצאות בחודש</legend>
+    <label>קבועות, בלי שכר דירה<span class="hint">חשבונות, תחבורה, מנויים, גן, החזרי הלוואות</span><input id="fixed" inputmode="numeric" autocomplete="off"></label>
+    <label>משתנות<span class="hint">ממוצע 3 חודשים מדף החשבון והאשראי</span><input id="var" inputmode="numeric" autocomplete="off"></label>
+    <div class="row2">
+      <label>שכר דירה היום<input id="rent" inputmode="numeric" autocomplete="off"></label>
+      <label>חיסכון שרוצים להמשיך<input id="sav" inputmode="numeric" autocomplete="off"></label>
+    </div>
+    <label>תוספות בדירה בבעלות<span class="hint">ועד בית, הפרש ארנונה, ביטוחי חיים ומבנה שהבנק דורש - לפי הצעה שקיבלתם</span><input id="extras" inputmode="numeric" autocomplete="off"></label>
+  </fieldset>
+  <fieldset>
+    <legend>הון עצמי וקנייה</legend>
+    <label>הון עצמי זמין היום<span class="hint">כולל עזרה מההורים, אם היא סגורה</span><input id="equity" inputmode="numeric" autocomplete="off"></label>
+    <div class="row2">
+      <label>עלויות סביב הקנייה<span class="hint">עו"ד, שמאי, תיווך, מס רכישה אם יש</span><input id="costs" inputmode="numeric" autocomplete="off"></label>
+      <label>החודש הראשון בדירה<span class="hint">הובלה, מכשירים, תיקונים</span><input id="first" inputmode="numeric" autocomplete="off"></label>
+    </div>
+    <label>כמה חודשי הוצאות להשאיר בצד<span class="hint">כלל אצבע נפוץ: לפחות 3. זו הכרית, והיא לא הופכת להון עצמי</span><input id="months" inputmode="decimal" autocomplete="off"></label>
+  </fieldset>
+  <fieldset>
+    <legend>ההלוואה</legend>
+    <div class="row2">
+      <label>ריבית שנתית משוערת<span class="hint">באחוזים, מהצעה של בנק או יועץ</span><input id="rate" inputmode="decimal" autocomplete="off"></label>
+      <label>שנות הלוואה<span class="hint">עד 30</span><input id="years" inputmode="numeric" autocomplete="off"></label>
+    </div>
+    <label>אחוז מימון מרבי<span class="hint">כמה ממחיר הדירה הבנק יכול לממן, לפי בנק ישראל</span>
+      <select id="ltv">
+        <option value="0.75">דירה יחידה - 75%</option>
+        <option value="0.70">משפרי דיור - 70%</option>
+        <option value="0.50">דירה להשקעה - 50%</option>
+      </select>
+    </label>
+    <div class="note" id="rateNote"></div>
+  </fieldset>
+
+  <h2><span class="n">2</span>ההחזר הנוח · 3 מספרים</h2>
+  <p>3 המספרים: <span class="star">★1</span> כמה נשאר בסוף חודש היום, <span class="star">★2</span> כמה נשאר בצד אחרי הקנייה, <span class="star">★3</span> מבחן החודש הרע.</p>
+  <div id="res2"></div>
+
+  <h2><span class="n">3</span>מה זה אומר על הדירה</h2>
+  <div id="res3"></div>
+
+  <h2><span class="n">4</span>בדיקת דירה</h2>
+  <fieldset>
+    <label>מחיר של דירה שראיתם<input id="price" inputmode="numeric" autocomplete="off"></label>
+  </fieldset>
+  <div id="res4"></div>
+
+  <h2><span class="n">5</span>סגירת חודש</h2>
+  <p>3 חודשים ברצף לפני משכנתא: תכננו, קרה, פער. בתחילת החודש ממלאים "תכננו", בסופו "קרה", והפער מחושב לבד. מהחודש השני זה 15 דקות.</p>
+  <div id="months3"></div>
+  <details>
+    <summary>מה הלאה, לפני שהולכים לבנק</summary>
+    <ul>
+      <li>דוח נתוני אשראי: אפשר לקבל פעם בשנה בחינם (creditdata.org.il)</li>
+      <li>ב-3 החודשים האחרונים: בלי מינוס ובלי החזרות תשלום</li>
+      <li>רשימה של כל ההלוואות והתשלומים הפתוחים</li>
+      <li>דברו ביניכם על: התוכניות ל-5 השנים הבאות, איך מתחלק ההחזר בינכם, והסכום שמעליו לא חותמים</li>
+    </ul>
+  </details>
+
+  <h2><span class="n">6</span>לשמור במכשיר</h2>
+  <p>הדף הזה לא שולח את המספרים לאף אחד. כדי לשמור אותם, שמרו סיכום במכשיר:</p>
+  <div class="btns">
+    <button type="button" class="pri" id="btnPrint">שמירה כ-PDF</button>
+    <button type="button" id="btnShare">שיתוף כטקסט</button>
+  </div>
+  <p class="note" id="saveNote">נפתח מתוך אינסטגרם? פתחו קודם בדפדפן: שלוש הנקודות למעלה, ואז "פתיחה ב-Chrome". באייפון: "פתיחה ב-Safari". אחר כך באנדרואיד בוחרים "שמירה כ-PDF", ובאייפון "שיתוף" ואז "הדפסה".</p>
+  <textarea id="fallback" readonly></textarea>
+
+  <details>
+    <summary>הנחות ומקורות</summary>
+    <p>מבחן החודש הרע: ההכנסה יורדת ב-20% והחיסכון נעצר. מרווח לעלייה בהחזר: 15%. טווח המחיר: ריבית גבוהה בנקודת אחוז אחת. כולן הנחות לבדיקת עמידות, לא תחזית.</p>
+    <p>בנק ישראל (הוראה 329, גרסה מ-30.6.2026): אחוז מימון מרבי 75% לדירה יחידה, 70% למשפרי דיור, 50% להשקעה. יחס החזר להכנסה עד 50% מההכנסה הפנויה, תקופה עד 30 שנה. boi.org.il</p>
+    <p>מס רכישה לא מחושב כאן. מכניסים אותו בעלויות, לפי המחשבון של רשות המסים.</p>
+    <p>מה המחשבון לא יודע: ריבית אחת לכל ההלוואה (בפועל כמה מסלולים), בלי הצמדה למדד, בלי שינויי ריבית לאורך השנים, ובלי שיקולי הבנק.</p>
+    <p>נכון ל-27.10.2026. בדקו עדכניות לפני שמסתמכים.</p>
+  </details>
+
+  <div class="foot">
+    <p>מספר אחד לא ברור? כתבו לי הודעה באינסטגרם, ואגיד לכם איך מחשבים אותו: <a class="ig" href="https://instagram.com/kesefbaktana" target="_blank" rel="noopener" dir="ltr">@kesefbaktana</a>. את המספרים עצמם אל תשלחו לי.</p>
+    <p>רוצים לעבור על זה ביחד? יש שיחת היכרות של 20 דקות, בלי התחייבות. כתבו לי הודעה באינסטגרם.</p>
+    <p>עובדים במחשב? <a class="ig" href="kesef-baktana-calculator.xlsx" download>הורדת הגרסה לאקסל</a>, עם אותם שלבים.</p>
+    <div class="sign">וזה, בקטנה.</div>
+    <p class="small">תוכן כללי ללמידה. לא ייעוץ משכנתאות, לא ייעוץ פיננסי אישי, לא ייעוץ מס, לא הצעה ולא אישור של בנק, ולא המלצה על בנק או מוצר. החישוב רץ רק בדפדפן שלכם. הנתונים נשמרים רק במכשיר הזה (אם הדפדפן מאפשר), ואפשר למחוק אותם בכפתור "ניקוי". <bdi dir="ltr">kesefbaktana@gmail.com</bdi> · גרסה 2</p>
+  </div>
+
+  <div id="printout"></div>
+</div>
+
+<script>
+// CALC-START
+// אותה לוגיקה כמו מחשבון-דירה-model.py. שינוי כאן - קודם במודל, ואז בדיקה (מחשבון-דירה-web-test.py)
+var DROP = 0.20, RISE = 0.15, SHOCK = 0.01;
+function pv(r, n, p) { return r === 0 ? p * n : p * (1 - Math.pow(1 + r, -n)) / r; }
+function pmt(r, n, l) { return r === 0 ? l / n : l * r / (1 - Math.pow(1 + r, -n)); }
+function num(v) { return (v === null || v === undefined || v === "") ? null : v; }
+function z(v) { return num(v) === null ? 0 : v; }
+function floor10k(x) { return Math.floor(x / 10000) * 10000; }
+function compute(c) {
+  var e = {};
+  var a = z(c.incA), b = z(c.incB);
+  if (!(a + b > 0 && num(c.fixed) !== null && num(c.var) !== null)) return null;
+  var inc = a + b, exp = c.fixed + c["var"], extras = z(c.extras), sav = z(c.sav);
+  e.inc = inc;
+  e.today = inc - exp - z(c.rent);
+  e.keep = inc - exp - extras - sav;
+  e.comfort = Math.max(0, e.keep) / (1 + RISE);
+  e.noRoom = e.keep <= 0;
+  e.bad = inc * (1 - DROP) - exp - extras - e.comfort;
+  e.pct = e.comfort / inc;
+  e.cushion = z(c.months) * (exp + extras + e.comfort);
+  if (e.bad >= 0) e.cover = "החודש הרע נסגר בלי לגעת בכרית";
+  else if (e.cushion === 0) e.cover = "אין כרית. מלאו כמה חודשי הוצאות להשאיר בצד";
+  else if (e.cushion / -e.bad >= 24) e.cover = "יותר משנתיים של חודשים כאלה";
+  else e.cover = "מספיקה לכ-" + Math.floor(e.cushion / -e.bad) + " חודשים כאלה";
+  e.loanReady = num(c.rate) !== null && z(c.years) > 0 && num(c.equity) !== null && c.ltv > 0 && c.ltv < 1;
+  if (!e.loanReady) return e;
+  var r = c.rate / 12, n = c.years * 12;
+  e.loan = pv(r, n, e.comfort);
+  e.avail = c.equity - e.cushion - z(c.costs) - z(c.first);
+  var byPay = e.loan + Math.max(0, e.avail);
+  var byLtv = Math.max(0, e.avail) / (1 - c.ltv);
+  e.ceil = Math.min(byPay, byLtv);
+  e.ceil_hi = Math.min(pv((c.rate + SHOCK) / 12, n, e.comfort) + Math.max(0, e.avail), byLtv);
+  var loanC = Math.max(0, e.ceil - Math.max(0, e.avail));
+  e.pay_ceil = loanC === 0 ? 0 : pmt(r, n, loanC);
+  if (e.comfort === 0) e.binding = "אין מקום להחזר. קודם מסדרים את התקציב";
+  else if (e.avail <= 0) e.binding = "ההון העצמי לא מכסה כרית ועלויות. קודם חוסכים";
+  else e.binding = byPay <= byLtv ? "ההחזר החודשי" : "ההון העצמי (אחוז המימון)";
+  if (e.comfort === 0) e.rangeText = "אין מקום להחזר. קודם מסדרים את התקציב";
+  else if (e.ceil <= 0) e.rangeText = "אין עדיין תקרה";
+  else if (floor10k(e.ceil_hi) === floor10k(e.ceil)) e.rangeText = "בערך " + fmt(floor10k(e.ceil)) + " ₪";
+  else e.rangeText = "בערך " + fmt(floor10k(e.ceil_hi)) + " עד " + fmt(floor10k(e.ceil)) + " ₪";
+  var price = num(c.price);
+  if (price === null || price <= 0) return e;
+  var al = Math.max(0, price - Math.max(0, e.avail));
+  e.apt_loan = al;
+  e.apt_ltv = al / price;
+  e.apt_pay = al === 0 ? 0 : pmt(r, n, al);
+  e.apt_left = inc - exp - extras - e.apt_pay;
+  e.apt_bad = inc * (1 - DROP) - exp - extras - e.apt_pay;
+  var overLtv = e.apt_ltv > c.ltv + 1e-5, overPay = e.apt_pay > e.comfort + 0.5;
+  if (e.avail < 0) e.verdict = "קודם להשלים כרית ועלויות";
+  else if (overLtv && overPay) e.verdict = "מעל אחוז המימון ומעל ההחזר הנוח";
+  else if (overLtv) e.verdict = "מעל אחוז המימון";
+  else if (overPay) e.verdict = "מעל ההחזר הנוח";
+  else e.verdict = "בתוך הגבולות";
+  if (e.avail >= 0 && e.apt_bad < 0) e.verdict += ". בחודש רע: מינוס";
+  return e;
+}
+function fmt(x) { return Math.round(x).toLocaleString("en-US"); }
+// שלושת הצעדים - כמו steps() ו-first_status() במודל
+var CATS = ["home", "rent", "food", "kids", "car", "family", "other"];
+var FIXED_CATS = ["home", "kids", "car", "family"], VAR_CATS = ["food", "other"];
+function avgOf(vals) {
+  var v = (vals || []).filter(function (x) { return num(x) !== null; });
+  if (!v.length) return null;
+  return v.reduce(function (s, x) { return s + x; }, 0) / v.length;
+}
+function sumOrNull(parts) {
+  if (parts.every(function (x) { return x === null; })) return null;
+  return parts.reduce(function (s, x) { return s + (x || 0); }, 0);
+}
+function computeSteps(s) {
+  var cats = s.cats || {}, a = {};
+  CATS.forEach(function (k) { a[k] = avgOf(cats[k]); });
+  var ann = (s.annual || []).filter(function (x) { return num(x) !== null; });
+  var fund = ann.length ? ann.reduce(function (t, x) { return t + x; }, 0) / 12 : null;
+  return {
+    avg: a, fund: fund,
+    total: sumOrNull(CATS.map(function (k) { return a[k]; })),
+    fixed: sumOrNull(FIXED_CATS.map(function (k) { return a[k]; }).concat([fund])),
+    "var": sumOrNull(VAR_CATS.map(function (k) { return a[k]; })),
+    rent: a.rent, sav: num(s.first)
+  };
+}
+function firstStatus(today, first) {
+  if (today === null || today === undefined) return "מלאו בלשונית 1 הכנסה והוצאות, כדי לראות כמה נשאר";
+  if (today < 0) return "במינוס: היום יוצא יותר ממה שנכנס. הסכום הולך קודם לסגירת המינוס";
+  if (num(first) === null) return "בחרו סכום. גם 500 ₪ זה התחלה";
+  if (first > today) return "הסכום גבוה ממה שנשאר היום. התחילו מסכום נמוך יותר";
+  return "אפשרי. הוראת קבע יום אחרי המשכורת";
+}
+// CALC-END
+
+(function () {
+  var IDS = ["incA", "incB", "fixed", "var", "rent", "sav", "extras", "equity", "costs", "first", "months", "rate", "years", "ltv", "price"];
+  var EXAMPLE = { incA: 14000, incB: 11000, fixed: 7500, "var": 6000, rent: 5200, sav: 1500, extras: 600, equity: 450000,
+    costs: 40000, first: 7000, months: 3, rate: 4.5, years: 25, ltv: "0.75", price: 1500000 };
+  var KEY = "kesef-calc-v1";
+  var $ = function (id) { return document.getElementById(id); };
+
+  var DECIMAL = { rate: 1, months: 1 };
+  function parse(v, id) {
+    v = String(v || "");
+    v = v.replace(/[\s₪%]/g, "");
+    if (DECIMAL[id]) v = v.replace(",", ".");
+    else { v = v.replace(/,/g, ""); if (/^\d{1,3}(\.\d{3})+$/.test(v)) v = v.replace(/\./g, ""); }  // "450.000" = 450,000
+    if (v === "") return null;
+    var x = Number(v);
+    if (!isFinite(x) || x < 0 || x > 1e9) return null;  // שלילי או מספר אבסורדי - כמו שדה ריק
+    return x;
+  }
+  function money(x) {
+    var s = fmt(Math.abs(x)) + " ₪";
+    return '<bdi dir="ltr" class="' + (x < 0 ? "neg" : "") + '">' + (x < 0 ? "-" : "") + s + "</bdi>";
+  }
+  function pct(x) { return '<bdi dir="ltr">' + (x * 100).toFixed(1) + "%</bdi>"; }
+  // מספר עם ₪ בתוך טקסט - בכיוון משמאל לימין, כמו בשאר הכרטיסים
+  function isoNums(t) { return String(t).replace(/(\d[\d,]*) ₪/g, '<bdi dir="ltr">$1 ₪</bdi>'); }
+  // ניסוח לתצוגה. הטקסט המחושב נשאר זהה לגיליון ולמודל
+  function verdictText(v) { return String(v).replace("מעל אחוז המימון", "ההלוואה מעל אחוז המימון שהבנק מאשר"); }
+  function coverText(t) { return /^(מספיקה|יותר)/.test(t) ? "הכרית " + (t.indexOf("יותר") === 0 ? "מספיקה ל" + t : t) : t; }
+  function leftWords(x) { return (x < 0 ? "חסר " : "נשאר ") + money(Math.abs(x)); }
+  function card(title, value, extra, cls) {
+    return '<div class="card ' + (cls || "") + '"><div class="t">' + title + '</div><div class="v">' + value + "</div>" +
+      (extra ? '<div class="x">' + extra + "</div>" : "") + "</div>";
+  }
+  function inputs() {
+    var c = {};
+    IDS.forEach(function (id) { c[id] = id === "ltv" ? Number($(id).value) : parse($(id).value, id); });
+    if (c.rate !== null) c.rate = c.rate / 100;
+    $("rateNote").innerHTML = c.rate !== null && c.rate > 0.15 ? '<span class="warn">בדקו את הריבית: מעל 15% זה חריג. כותבים 4.5 ולא 45. כל התוצאות למטה מחושבות לפי הריבית הזו.</span>' : "";
+    return c;
+  }
+  function star(n) { return '<span class="star">★' + n + "</span> "; }
+
+  function render() {
+    var c = inputs(), e = compute(c);
+    renderSteps(e ? e.today : null);
+    save();
+    hideFallback();
+    if (!e) {
+      var need = [];
+      if (!((c.incA || 0) + (c.incB || 0) > 0)) need.push("הכנסה אחת לפחות");
+      if (c.fixed === null) need.push("הוצאות קבועות");
+      if (c["var"] === null) need.push("הוצאות משתנות");
+      var needTxt = need.length > 1 ? need.slice(0, -1).join(", ") + " ו" + need[need.length - 1] : need.join("");
+      $("res2").innerHTML = '<p class="empty">כדי לראות תוצאות, מלאו בחלק 1 ' + needTxt + '.</p>';
+      $("res3").innerHTML = ""; $("res4").innerHTML = ""; renderMonths(); return;
+    }
+    $("res2").innerHTML =
+      card(star(1) + "כמה נשאר בסוף חודש, היום", money(e.today), e.today < 0 ?
+        "היום יוצא יותר ממה שנכנס. לפני משכנתא כדאי לסגור את הפער הזה. בדקו גם מול דף החשבון." :
+        "בדקו מול דף החשבון. אם שם נשאר פחות, ההוצאות שכתבתם נמוכות מהמציאות.") +
+      card("ההחזר הנוח לכם", money(e.comfort), e.noRoom ? "אין מקום להחזר. קודם מסדרים את התקציב." :
+        ((c.sav ? "גם אם ההחזר יעלה ב-15%, עדיין תמשיכו לחסוך." : "גם אם ההחזר יעלה ב-15%, עדיין תסגרו את החודש.") + " זה " + pct(e.pct) + " מההכנסה. " +
+        (c.rent ? "שכר הדירה כבר לא יוצא אחרי הקנייה, ולכן ההחזר יכול להיות גדול ממה שנשאר היום. " : "") +
+        "הבנק יכול לאשר יותר, אבל הגבול שלו הוא לא היעד שלכם."), "key big") +
+      card(star(2) + "כמה נשאר בצד אחרי הקנייה", money(e.cushion), "חודשי ההוצאות שבחרתם, כולל ההחזר החדש. הכרית לא נכנסת לקנייה.") +
+      card(star(3) + "מבחן החודש הרע: נשאר או חסר", money(e.bad),
+        coverText(e.cover) + ". ההכנסה יורדת ב-20% והחיסכון נעצר. גם החזר נוח יכול להיכנס למינוס בחודש רע, ובשביל זה יש כרית. מינוס גדול אומר שההחזר רחוק מנוח.");
+    if (!e.loanReady) {
+      var miss = [];
+      if (c.rate === null) miss.push("ריבית");
+      if (!(c.years > 0)) miss.push("שנות הלוואה");
+      if (c.equity === null) miss.push("הון עצמי");
+      var missTxt = miss.length > 1 ? miss.slice(0, -1).join(", ") + " ו" + miss[miss.length - 1] : miss.join("");
+      $("res3").innerHTML = '<p class="empty">כדי לראות מחיר להמחשה, מלאו בחלק 1 גם ' + missTxt + '.</p>';
+      $("res4").innerHTML = '<p class="empty">כדי לבדוק דירה, מלאו קודם בחלק 1 ' + missTxt + '.</p>';
+      renderMonths(); return;
+    }
+    var ltvBinds = e.binding === "ההון העצמי (אחוז המימון)";
+    $("res3").innerHTML =
+      card("המחיר להמחשה", isoNums(e.rangeText), "מה מגביל: " + e.binding + ". הטווח הוא בין הריבית שהכנסתם לריבית גבוהה בנקודת אחוז. תקרה להמחשה, לא מה שהבנק יאשר.", "key range") +
+      card("ההלוואה שההחזר הנוח מחזיר", money(e.loan), (ltvBinds ? "זו ההלוואה שההחזר מאפשר. בפועל ההון העצמי ואחוז המימון מגבילים, ולכן המחיר נמוך יותר. " : "") +
+        "הון עצמי שנשאר לקנייה עצמה, אחרי כרית ועלויות: " + money(e.avail));
+    if (e.verdict === undefined) {
+      $("res4").innerHTML = '<p class="empty">הכניסו מחיר של דירה שראיתם.</p>';
+    } else {
+      $("res4").innerHTML =
+        card("התוצאה, להמחשה לפי מה שהזנתם", verdictText(e.verdict), "", "key txt") +
+        card("הלוואה נדרשת", money(e.apt_loan), "אחוז מימון: " + pct(e.apt_ltv)) +
+        card("החזר חודשי", money(e.apt_pay), "") +
+        card("נשאר בסוף חודש אחרי הקנייה", money(e.apt_left), "היום " + leftWords(e.today) + " (" + star(1).trim() + ")") +
+        card(star(3) + "בחודש רע, אחרי הקנייה", money(e.apt_bad), "");
+    }
+    renderMonths();
+  }
+
+  function renderMonths() {
+    for (var m = 1; m <= 3; m++) {
+      var pi = parse($("m" + m + "pi").value), pe = parse($("m" + m + "pe").value),
+        ai = parse($("m" + m + "ai").value), ae = parse($("m" + m + "ae").value);
+      var out = "";
+      if (pi !== null && pe !== null && ai !== null && ae !== null) {
+        var plan = pi - pe, act = ai - ae;
+        var de = ae - pe;
+        out = "<div>תכננו שיישאר: " + money(plan) + "</div><div>נשאר בפועל: " + money(act) + "</div><div>פער: " + money(act - plan) + "</div>" +
+          (de > 0 ? '<div class="neg">הוצאות מעל התכנון: ' + money(de) + "</div>" :
+            de < 0 ? "<div>הוצאות מתחת לתכנון: " + money(-de) + "</div>" : "<div>הוצאות בדיוק לפי התכנון</div>");
+      }
+      $("m" + m + "gap").innerHTML = out;
+    }
+  }
+
+  function buildMonths() {
+    var h = "";
+    for (var m = 1; m <= 3; m++) {
+      h += '<div class="month"><div class="t"><b>חודש ' + m + "</b></div>" +
+        '<div class="row2"><label>הכנסות - תכננו<input id="m' + m + 'pi" inputmode="numeric" autocomplete="off"></label>' +
+        '<label>הכנסות - קרה<input id="m' + m + 'ai" inputmode="numeric" autocomplete="off"></label></div>' +
+        '<div class="row2"><label>הוצאות - תכננו<input id="m' + m + 'pe" inputmode="numeric" autocomplete="off"></label>' +
+        '<label>הוצאות - קרה<input id="m' + m + 'ae" inputmode="numeric" autocomplete="off"></label></div>' +
+        '<div class="gap" id="m' + m + 'gap"></div></div>';
+    }
+    $("months3").innerHTML = h;
+  }
+
+  // ---------- שלושת הצעדים ----------
+  var CAT_LABELS = { home: ["דיור, בלי שכר דירה", "חשבונות, ארנונה, ועד בית"], rent: ["שכר דירה", ""], food: ["אוכל", "סופר, מסעדות, משלוחים"],
+    kids: ["ילדים", "גן, חוגים, ביגוד"], car: ["רכב ותחבורה", "דלק, חניה, תחבורה ציבורית"], family: ["עזרה למשפחה או מזונות", "קטגוריה משלה, אם יש"],
+    other: ["כל השאר", "כולל החזרי הלוואות"] };
+  var ANNUAL = ["ביטוח רכב", "טסט ורישוי", "חגים", "ימי הולדת ומתנות", "קייטנות", "אחר", "אחר", "אחר"];
+  function stepIds() {
+    var ids = [];
+    CATS.forEach(function (k) { for (var m = 1; m <= 3; m++) ids.push("st_" + k + "_" + m); });
+    ANNUAL.forEach(function (_, i) { ids.push("an_" + i); });
+    ids.push("st_first");
+    return ids;
+  }
+  function buildSteps() {
+    var h = '<fieldset><legend>צעד 1: 3 חודשים אחורה</legend><p class="hint">מדפי האשראי והבנק. חודש בלי נתון? משאירים ריק.</p>';
+    CATS.forEach(function (k) {
+      h += '<div class="cat"><div class="t">' + CAT_LABELS[k][0] + (CAT_LABELS[k][1] ? ' <span class="hint" style="display:inline">· ' + CAT_LABELS[k][1] + "</span>" : "") + '</div><div class="row3">';
+      for (var m = 1; m <= 3; m++) h += '<input id="st_' + k + "_" + m + '" inputmode="numeric" autocomplete="off" placeholder="חודש ' + m + '" aria-label="' + CAT_LABELS[k][0] + " חודש " + m + '">';
+      h += '</div><div class="avg" id="avg_' + k + '"></div></div>';
+    });
+    h += '<div class="note" id="stTotal"></div></fieldset>';
+    h += '<fieldset><legend>צעד 2: הקופה השנתית</legend><p class="hint">הוצאות שחוזרות פעם בשנה. כמה בשנה?</p>';
+    for (var i = 0; i < ANNUAL.length; i += 2) {
+      h += '<div class="row2">';
+      [i, i + 1].forEach(function (j) { h += '<label>' + ANNUAL[j] + '<input id="an_' + j + '" inputmode="numeric" autocomplete="off"></label>'; });
+      h += "</div>";
+    }
+    h += '<div class="note" id="stFund"></div></fieldset>';
+    h += '<fieldset><legend>צעד 3: קודם לעצמכם</legend><label>כמה יוצא לחיסכון יום אחרי המשכורת<span class="hint">בהוראת קבע</span><input id="st_first" inputmode="numeric" autocomplete="off"></label>' +
+      '<div class="note" id="stStatus"></div></fieldset>';
+    $("steps").innerHTML = h;
+  }
+  function stepInputs() {
+    var s = { cats: {}, annual: [], first: parse($("st_first").value) };
+    CATS.forEach(function (k) { s.cats[k] = [1, 2, 3].map(function (m) { return parse($("st_" + k + "_" + m).value); }); });
+    ANNUAL.forEach(function (_, i) { s.annual.push(parse($("an_" + i).value)); });
+    return s;
+  }
+  // מעביר לחלק 1. רק שדות שיש להם נתון בצעדים - כך מי שמילא את חלק 1 ישירות לא מאבד אותו
+  function applySteps() {
+    var d = computeSteps(stepInputs());
+    [["fixed", d.fixed], ["var", d["var"]], ["rent", d.rent], ["sav", d.sav]].forEach(function (p) {
+      if (p[1] !== null) $(p[0]).value = fmt(p[1]);
+    });
+  }
+  function renderSteps(today) {
+    var s = stepInputs(), d = computeSteps(s);
+    CATS.forEach(function (k) { $("avg_" + k).innerHTML = d.avg[k] === null ? "" : "ממוצע: " + money(d.avg[k]); });
+    $("stTotal").innerHTML = d.total === null ? "" : "<b>סה״כ בחודש, בממוצע: " + money(d.total) + '</b> <span class="fed">· עבר לחלק 1</span>';
+    $("stFund").innerHTML = d.fund === null ? "" : "<b>לקופה בכל חודש: " + money(d.fund) + '</b> <span class="fed">· נכנס להוצאות הקבועות בחלק 1</span>';
+    $("stStatus").innerHTML = (today === null ? "" : star(1) + "נשאר בסוף חודש, היום: " + money(today) + "<br>") + "<b>" + isoNums(firstStatus(today, s.first)) + "</b>";
+  }
+
+  function allIds() {
+    var ids = IDS.slice();
+    for (var m = 1; m <= 3; m++) ["pi", "pe", "ai", "ae"].forEach(function (k) { ids.push("m" + m + k); });
+    return ids.concat(stepIds());
+  }
+  function save() {
+    try { var d = {}; allIds().forEach(function (id) { d[id] = $(id).value; }); localStorage.setItem(KEY, JSON.stringify(d)); } catch (err) {}
+  }
+  function load() {
+    try {
+      var d = JSON.parse(localStorage.getItem(KEY) || "null");
+      if (d) allIds().forEach(function (id) { if (d[id] !== undefined && d[id] !== null) $(id).value = d[id]; });
+    } catch (err) {}
+  }
+
+  function summaryRows() {
+    var c = inputs(), e = compute(c), rows = [];
+    var labels = { incA: "נטו - אחד מכם", incB: "נטו - השני", fixed: "הוצאות קבועות", "var": "הוצאות משתנות", rent: "שכר דירה היום",
+      sav: "חיסכון חודשי", extras: "תוספות בדירה בבעלות", equity: "הון עצמי", costs: "עלויות קנייה", first: "החודש הראשון",
+      months: "חודשי כרית", rate: "ריבית (%)", years: "שנות הלוואה", price: "מחיר דירה שנבדקה" };
+    var inRows = [];
+    var lw = function (x) { return (x < 0 ? "חסר " : "נשאר ") + fmt(Math.abs(x)) + " ₪"; };
+    Object.keys(labels).forEach(function (k) { var v = parse($(k).value, k); if (v !== null) inRows.push([labels[k], k === "rate" || k === "months" || k === "years" ? String(v) : fmt(v) + " ₪"]); });
+    if (e) {
+      rows.push(["★1 בסוף חודש, היום", lw(e.today)]);
+      rows.push(["ההחזר הנוח לכם", fmt(e.comfort) + " ₪"]);
+      rows.push(["★2 נשאר בצד אחרי הקנייה", fmt(e.cushion) + " ₪"]);
+      rows.push(["★3 בחודש רע", lw(e.bad) + " · " + coverText(e.cover)]);
+      if (e.loanReady) { rows.push(["המחיר להמחשה", e.rangeText]); rows.push(["מה מגביל", e.binding]); }
+      if (e.verdict) rows.push(["בדיקת הדירה", verdictText(e.verdict)]);
+    }
+    return { inRows: inRows, rows: rows };
+  }
+  function isExample() {
+    return IDS.every(function (id) { return id === "ltv" || String(parse($(id).value, id)) === String(EXAMPLE[id]); });
+  }
+  function summaryText() {
+    var s = summaryRows(), d = new Date().toLocaleDateString("he-IL");
+    var t = "כמה החזר נוח לנו? · כסף בקטנה · " + d + (isExample() ? " (נתוני דוגמה)" : "") + "\n\nהנתונים:\n";
+    s.inRows.forEach(function (r) { t += "- " + r[0] + ": " + r[1] + "\n"; });
+    t += "\nהתוצאות:\n";
+    s.rows.forEach(function (r) { t += "- " + r[0] + ": " + r[1] + "\n"; });
+    t += "\nלהמחשה בלבד. לא ייעוץ משכנתאות, פיננסי או מס. וזה, בקטנה.\nכסף בקטנה · אינסטגרם @kesefbaktana · kesefbaktana@gmail.com";
+    return t;
+  }
+  function buildPrintout() {
+    var s = summaryRows(), d = new Date().toLocaleDateString("he-IL");
+    var tr = function (r) { return "<tr><td>" + r[0] + '</td><td class="num">' + r[1] + "</td></tr>"; };
+    $("printout").innerHTML = "<h1>כמה החזר נוח לנו?</h1><p>כסף בקטנה · " + d + (isExample() ? " (נתוני דוגמה)" : "") + "</p><h3>התוצאות</h3><table>" +
+      s.rows.map(tr).join("") + "</table><h3>הנתונים שהכנסתם</h3><table>" + s.inRows.map(tr).join("") + "</table>" +
+      '<p class="small">להמחשה בלבד. לא ייעוץ משכנתאות, לא ייעוץ פיננסי אישי ולא ייעוץ מס, ולא אישור של בנק. ריבית אחת לכל ההלוואה, בלי הצמדה למדד.</p><p class="sign">וזה, בקטנה.</p>';
+  }
+  var SAVE_NOTE = $("saveNote").textContent;
+  // הסיכום נבנה לפי המספרים ברגע הלחיצה. כל שינוי בשדה מסתיר אותו, כדי שלא יישאר סיכום ישן
+  function hideFallback() {
+    if ($("fallback").style.display === "block") { $("fallback").style.display = "none"; $("saveNote").textContent = SAVE_NOTE; }
+  }
+  function showFallback(msg) {
+    var f = $("fallback"); f.value = summaryText(); f.style.display = "block"; f.focus(); f.select();
+    $("saveNote").textContent = msg;
+  }
+
+  buildMonths();
+  buildSteps();
+  load();
+  var IS_STEP = {};
+  stepIds().forEach(function (id) { IS_STEP[id] = 1; });
+  // מפרידי אלפים אחרי שסיימו להקליד בשדה סכום (לא בריבית ובחודשים)
+  function tidy(id) {
+    if (id === "ltv" || DECIMAL[id] || id === "years") return;
+    var v = parse($(id).value, id);
+    if (v !== null) $(id).value = fmt(v);
+  }
+  allIds().forEach(function (id) {
+    $(id).addEventListener("input", function () { if (IS_STEP[id]) applySteps(); render(); });
+    $(id).addEventListener("change", function () { tidy(id); if (IS_STEP[id]) applySteps(); render(); });
+  });
+  allIds().forEach(tidy);
+  $("btnExample").addEventListener("click", function () {
+    IDS.forEach(function (id) { $(id).value = EXAMPLE[id]; tidy(id); });
+    $("exampleNote").textContent = "מילאנו דוגמה להמחשה, לא המלצה. התוצאות למטה. החליפו במספרים שלכם.";
+    render();
+    try { $("res2").scrollIntoView({ behavior: "smooth", block: "start" }); } catch (err) { $("res2").scrollIntoView(); }
+  });
+  var clearArmed = null;
+  $("btnClear").addEventListener("click", function () {
+    if (!clearArmed) {
+      $("btnClear").textContent = "בטוח? לחצו שוב";
+      clearArmed = setTimeout(function () { clearArmed = null; $("btnClear").textContent = "ניקוי"; }, 4000);
+      return;
+    }
+    clearTimeout(clearArmed); clearArmed = null; $("btnClear").textContent = "ניקוי";
+    allIds().forEach(function (id) { $(id).value = id === "ltv" ? "0.75" : ""; });
+    $("exampleNote").textContent = "הכל נמחק.";
+    setTimeout(function () { if ($("exampleNote").textContent === "הכל נמחק.") $("exampleNote").textContent = ""; }, 3000);
+    try { localStorage.removeItem(KEY); } catch (err) {}
+    render();
+  });
+  $("btnPrint").addEventListener("click", function () {
+    buildPrintout();
+    $("saveNote").textContent = "פותח חלון שמירה...";
+    // חלון ההדפסה עוצר את הדף. אם חזרנו כמעט מיד - כנראה לא נפתח (דפדפן של אינסטגרם, מסגרת מוגבלת)
+    var t0 = Date.now();
+    try { window.print(); } catch (err) {}
+    if (Date.now() - t0 < 700) showFallback("לא נפתח חלון שמירה? פתחו את הדף ב-Chrome או ב-Safari, או העתיקו את הטקסט ושמרו אותו בהערות:");
+    else $("saveNote").textContent = SAVE_NOTE;
+  });
+  $("btnShare").addEventListener("click", function () {
+    var t = summaryText();
+    var framed = false;
+    try { framed = window.self !== window.top; } catch (err) { framed = true; }
+    // בתוך המסגרת של Apps Script השיתוף של הטלפון חסום, ולכן מציגים ישר טקסט להעתקה
+    if (navigator.share && !framed) {
+      navigator.share({ title: "כמה החזר נוח לנו?", text: t }).catch(function (err) {
+        if (err && err.name === "AbortError") return;
+        showFallback("השיתוף לא נתמך כאן. העתיקו את הטקסט:");
+      });
+      return;
+    }
+    showFallback("סמנו והעתיקו את הטקסט, ושמרו אותו בהערות או שלחו לעצמכם:");
+    try { document.execCommand("copy"); $("saveNote").textContent = "הועתק. אפשר להדביק בהערות או בהודעה לעצמכם."; } catch (err) {}
+  });
+  render();
+})();
+</script>
+</body>
+</html>
