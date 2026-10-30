@@ -323,12 +323,12 @@ function firstStatus(today, first) {
     return x;
   }
   function money(x) {
-    var s = fmt(Math.abs(x)) + " ₪";
-    return '<bdi dir="ltr" class="' + (x < 0 ? "neg" : "") + '">' + (x < 0 ? "-" : "") + s + "</bdi>";
+    // המספר מבודד משמאל לימין, וה-₪ אחריו בכיוון העברי: קודם המספר, אחר כך הסימן
+    return '<span class="' + (x < 0 ? "neg" : "") + '"><bdi dir="ltr">' + (x < 0 ? "-" : "") + fmt(Math.abs(x)) + "</bdi> ₪</span>";
   }
   function pct(x) { return '<bdi dir="ltr">' + (x * 100).toFixed(1) + "%</bdi>"; }
-  // מספר עם ₪ בתוך טקסט - בכיוון משמאל לימין, כמו בשאר הכרטיסים
-  function isoNums(t) { return String(t).replace(/(\d[\d,]*) ₪/g, '<bdi dir="ltr">$1 ₪</bdi>'); }
+  // מספר עם ₪ בתוך טקסט - כמו בשאר הכרטיסים
+  function isoNums(t) { return String(t).replace(/(\d[\d,]*) ₪/g, '<bdi dir="ltr">$1</bdi> ₪'); }
   // ניסוח לתצוגה. הטקסט המחושב נשאר זהה לגיליון ולמודל
   function verdictText(v) { return String(v).replace("מעל אחוז המימון", "ההלוואה מעל אחוז המימון שהבנק מאשר"); }
   function coverText(t) { return /^(מספיקה|יותר)/.test(t) ? "הכרית " + (t.indexOf("יותר") === 0 ? "מספיקה ל" + t : t) : t; }
