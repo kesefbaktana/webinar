@@ -97,7 +97,7 @@ bdi{unicode-bidi:isolate}
 <div class="wrap">
   <div class="micro">כסף בקטנה · סדר בבית · שקט בכיס · כסף בקטנה · סדר בבית · שקט בכיס · כסף בקטנה · סדר בבית · שקט בכיס</div>
   <h1>כמה החזר נוח לנו?</h1>
-  <div class="sub">מחשבון לזוגות לפני דירה ראשונה<br>מאלישיב, איש כספים בתאגיד</div>
+  <div class="sub" id="subLine">מחשבון לזוגות לפני דירה ראשונה<br>מאלישיב, איש כספים בתאגיד</div>
   <p class="lead">הבנק בודק כמה תוכלו להחזיר. המחשבון הזה בודק כמה יהיה לכם נוח להחזיר, ומה זה אומר על מחיר הדירה.</p>
   <p class="disc">להמחשה בלבד. לא ייעוץ משכנתאות, לא ייעוץ פיננסי ולא ייעוץ מס. 20 דקות, שניכם, עם דפי החשבון של 3 החודשים האחרונים.</p>
   <div class="btns">
@@ -477,7 +477,7 @@ function firstStatus(today, first) {
     CATS.forEach(function (k) { $("avg_" + k).innerHTML = d.avg[k] === null ? "" : "ממוצע: " + money(d.avg[k]); });
     $("stTotal").innerHTML = d.total === null ? "" : "<b>סה״כ בחודש, בממוצע: " + money(d.total) + '</b> <span class="fed">· עבר לחלק 1</span>';
     $("stFund").innerHTML = d.fund === null ? "" : "<b>לקופה בכל חודש: " + money(d.fund) + '</b> <span class="fed">· נכנס להוצאות הקבועות בחלק 1</span>';
-    $("stStatus").innerHTML = (today === null ? "" : star(1) + "נשאר בסוף חודש, היום: " + money(today) + "<br>") + "<b>" + isoNums(firstStatus(today, s.first)) + "</b>";
+    $("stStatus").innerHTML = (today === null ? "" : star(1) + "נשאר בסוף חודש, היום: " + money(today) + "<br>") + "<b>" + isoNums(firstStatus(today, s.first).replace("בלשונית 1", "בחלק 1")) + "</b>";
   }
 
   function allIds() {
@@ -546,6 +546,8 @@ function firstStatus(today, first) {
   // הגיע ממייל ההמשך עם הסכמה: ההזמנה לשיחה מובילה לטופס הפיילוט, כמו במייל
   try {
     var QS = new URLSearchParams(location.search), SRC = QS.get("src"), UNTIL = Number(QS.get("until"));
+    // הגיעו מהוובינר: הכותרת מחברת למה שהובטח שם, ולא רק למשכנתא
+    if (/^(gift|followup)/.test(SRC || "")) $("subLine").innerHTML = "המחשבון מהוובינר: 3 הצעדים, ואז כמה החזר נוח לכם<br>מאלישיב, איש כספים בתאגיד";
     if (SRC === "gift") $("ctaCall").style.display = "none";
     // רק עד שהפיילוט נסגר. אחרי זה - ההזמנה הרגילה
     if (SRC === "followup" && UNTIL && Date.now() < UNTIL) $("ctaCall").innerHTML = 'רוצים לעבור על זה ביחד? <a class="ig" href="../pilot/?src=followup">השאירו פרטים לשיחת היכרות</a> - 20 דקות, בלי התחייבות.';
