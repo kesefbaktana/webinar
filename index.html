@@ -198,7 +198,16 @@
     .sticky.hide { transform: translateY(140%); opacity: 0; pointer-events: none; }
   }
   /* אנימציות גלילה - נכנסות רק כש-JS פעיל, ונכבות עם "הפחתת תנועה" */
-  .js .rv { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); will-change: opacity, transform; }
+  .js .rv { opacity: 0; transform: translateY(56px) scale(.96); transition: opacity .9s ease, transform .9s cubic-bezier(.16,1,.3,1); transition-delay: var(--d, 0s); will-change: opacity, transform; }
+  @media (min-width: 821px) {
+    .js .entry.rv:nth-child(odd) { transform: translateX(70px); }
+    .js .entry.rv:nth-child(even) { transform: translateX(-70px); }
+    .js .fit > div.rv:nth-child(odd) { transform: translateX(70px); }
+    .js .fit > div.rv:nth-child(even) { transform: translateX(-70px); }
+  }
+  .seal svg.rosette { animation: spin 90s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .progress { position: fixed; top: 0; inset-inline-start: 0; height: 4px; width: 0; background: var(--coin); z-index: 10; pointer-events: none; }
   .js .rv.in { opacity: 1; transform: none; will-change: auto; }
   .js .seal.rv { transform: scale(.94); }
   .js .seal.rv.in { transform: none; }
@@ -217,10 +226,11 @@
   .profile .row .btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink-2); }
   .profile .thanks { font-weight: 700; margin: 0; }
 
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; } .btn, .sticky { transition: none; }
-    .js .rv, .js .courses li.rv::before { opacity: 1; transform: none; transition: none; }
-  }
+  /* "הפחתת תנועה" (באנדרואיד: "הסרת אנימציות") - נשארת רק הופעה בעמעום, בלי תזוזה */
+  .calm .rv, .calm .rv.in, .calm .entry.rv, .calm .fit > div.rv, .calm .seal.rv { transform: none !important; transition: opacity .7s ease !important; }
+  .calm .courses li.rv::before { transform: none !important; transition: none !important; }
+  .calm .seal svg.rosette { animation: none; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .btn, .sticky { transition: none; } }
 </style>
 </head>
 <body>
@@ -469,8 +479,28 @@ document.querySelectorAll("img[data-face]").forEach(i => { i.src = document.quer
 
 /* אנימציות גלילה: כל קטע נכנס כשהוא מגיע למסך, פעם אחת. בלי IntersectionObserver - הכל נראה כרגיל */
 (function () {
-  if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (!("IntersectionObserver" in window)) return;
+  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
   document.documentElement.classList.add("js");
+  if (calm) document.documentElement.classList.add("calm");
+
+  // פס התקדמות גלילה
+  const bar = document.createElement("div"); bar.className = "progress"; bar.setAttribute("aria-hidden", "true"); document.body.appendChild(bar);
+  const upd = () => { const h = document.documentElement.scrollHeight - innerHeight; bar.style.width = (h > 0 ? Math.min(100, scrollY / h * 100) : 0) + "%"; };
+  addEventListener("scroll", upd, { passive: true }); upd();
+
+  // ספירה במספרים הגדולים (60,000 ₪ וכו') כשהם מגיעים למסך
+  const counts = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return; counts.unobserve(e.target);
+    const el = e.target, to = +el.dataset.to, t0 = performance.now();
+    const step = t => { const k = Math.min(1, (t - t0) / 1400), v = Math.round(to * (1 - Math.pow(1 - k, 3)));
+      el.textContent = v.toLocaleString("en-US") + " ₪"; if (k < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  }), { threshold: 0.6 });
+  if (!calm) document.querySelectorAll(".denom").forEach(el => {
+    const n = parseInt(el.textContent.replace(/[^\d]/g, ""), 10); if (!n) return;
+    el.dataset.to = n; el.textContent = "0 ₪"; counts.observe(el);
+  });
   const groups = [
     [".note .seal", 0], [".note .kicker, .note h1, .note .lede, .note .when, .note .btn, .note .serial", 1],
     ["section > h2, section > .sub, section > .footnote", 0],
@@ -481,7 +511,7 @@ document.querySelectorAll("img[data-face]").forEach(i => { i.src = document.quer
   }), { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
   groups.forEach(([sel, stagger]) => document.querySelectorAll(sel).forEach((el, i) => {
     el.classList.add("rv");
-    if (stagger) el.style.setProperty("--d", Math.min(i, 5) * 0.08 + "s");
+    if (stagger) el.style.setProperty("--d", Math.min(i, 5) * 0.12 + "s");
     io.observe(el);
   }));
 })();
