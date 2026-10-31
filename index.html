@@ -197,7 +197,30 @@
     .sticky .btn { width: 100%; background: var(--ink); color: var(--light); box-shadow: 0 10px 24px -10px rgba(0,0,0,.5); }
     .sticky.hide { transform: translateY(140%); opacity: 0; pointer-events: none; }
   }
-  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .btn, .sticky { transition: none; } }
+  /* אנימציות גלילה - נכנסות רק כש-JS פעיל, ונכבות עם "הפחתת תנועה" */
+  .js .rv { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); will-change: opacity, transform; }
+  .js .rv.in { opacity: 1; transform: none; will-change: auto; }
+  .js .seal.rv { transform: scale(.94); }
+  .js .seal.rv.in { transform: none; }
+  .js .courses li.rv::before { transform: scale(.7); transform-origin: right center; transition: transform .6s cubic-bezier(.2,.7,.2,1) calc(var(--d, 0s) + .1s); }
+  .js .courses li.rv.in::before { transform: none; }
+
+  /* שאלון אופציונלי אחרי ההרשמה */
+  .profile { margin-top: 22px; padding-top: 20px; border-top: 1px dashed var(--under); text-align: start; }
+  .profile h3 { margin: 0 0 4px; font-size: 18px; }
+  .profile .hint { margin-bottom: 14px; }
+  .profile .pf { margin-bottom: 12px; }
+  .profile label { display: block; font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+  .profile select { width: 100%; font: 400 17px var(--body); color: var(--ink); background: var(--light); border: 1px solid var(--under); border-radius: 10px; padding: 12px 10px; }
+  .profile .row { display: flex; gap: 10px; margin-top: 14px; }
+  .profile .row .btn { flex: 1; font-size: 16px; padding: 12px 16px; }
+  .profile .row .btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink-2); }
+  .profile .thanks { font-weight: 700; margin: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; } .btn, .sticky { transition: none; }
+    .js .rv, .js .courses li.rv::before { opacity: 1; transform: none; transition: none; }
+  }
 </style>
 </head>
 <body>
@@ -444,6 +467,25 @@ document.querySelectorAll("img[data-face]").forEach(i => { i.src = document.quer
   io.observe(reg); io.observe(hero);
 })();
 
+/* אנימציות גלילה: כל קטע נכנס כשהוא מגיע למסך, פעם אחת. בלי IntersectionObserver - הכל נראה כרגיל */
+(function () {
+  if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  document.documentElement.classList.add("js");
+  const groups = [
+    [".note .seal", 0], [".note .kicker, .note h1, .note .lede, .note .when, .note .btn, .note .serial", 1],
+    ["section > h2, section > .sub, section > .footnote", 0],
+    [".entry", 1], [".courses li", 1], [".fit > div", 1], [".host", 0], [".reg > *", 1], [".faq details", 1]
+  ];
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+  }), { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+  groups.forEach(([sel, stagger]) => document.querySelectorAll(sel).forEach((el, i) => {
+    el.classList.add("rv");
+    if (stagger) el.style.setProperty("--d", Math.min(i, 5) * 0.08 + "s");
+    io.observe(el);
+  }));
+})();
+
 /* מקור ההגעה - ?src=שם-המפיץ בקישור */
 const params = new URLSearchParams(location.search);
 // כשהדף מוגש מ-Apps Script הוא רץ בתוך iframe, ו-doGet מזריק את src כאן
@@ -488,7 +530,7 @@ form.addEventListener("submit", async e => {
       const j = await r.json();
       if (!j.ok) throw new Error(j.error || "failed");
     }
-    showDone(body.get("name"), !CONFIG.endpoint);
+    showDone(body.get("name"), !CONFIG.endpoint, body.get("email"));
   } catch (err) {
     btn.disabled = false; btn.textContent = "שלחו לי את הקישור לוובינר";
     ferr.textContent = "משהו לא עבד בשליחה. נסו שוב בעוד רגע, או כתבו לי ל-kesefbaktana@gmail.com.";
@@ -496,7 +538,7 @@ form.addEventListener("submit", async e => {
   }
 });
 
-function showDone(name, demo) {
+function showDone(name, demo, email) {
   const cal = CONFIG.calStartUtc
     ? `<a class="btn" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent("וובינר: לאן הולך הכסף שלכם?")}&dates=${CONFIG.calStartUtc}/${CONFIG.calEndUtc}&details=${encodeURIComponent("הקישור ל-Google Meet נשלח אליכם במייל. כסף בקטנה")}">הוספה ליומן</a>`
     : "";
@@ -507,9 +549,40 @@ function showDone(name, demo) {
     <p>את המועד המדויק ואת הקישור למפגש אשלח אליכם למייל. לא מוצאים? הציצו בתיקיית הספאם או בקידומי מכירות.</p>
     ${cal}
     ${demo ? '<div class="demo">מצב תצוגה: הטופס עוד לא מחובר, הפרטים לא נשלחו.</div>' : ""}
+    <div class="profile" id="profile">
+      <h3>עוד דקה, אם נוח לכם</h3>
+      <div class="hint">שלוש שאלות אופציונליות, בלי שם, כדי שאכין את הוובינר למי שבאמת מגיע.</div>
+      <div class="pf"><label for="pf-age">גיל (שלכם, או הצעיר מבין השניים)</label>
+        <select id="pf-age"><option value="">בחרו</option><option>עד 30</option><option>31-35</option><option>36-40</option><option>41-45</option><option>46 ומעלה</option></select></div>
+      <div class="pf"><label for="pf-region">אזור מגורים</label>
+        <select id="pf-region"><option value="">בחרו</option><option>צפון</option><option>חיפה והקריות</option><option>שרון</option><option>גוש דן</option><option>ירושלים והסביבה</option><option>שפלה</option><option>דרום</option></select></div>
+      <div class="pf"><label for="pf-topic">מה הכי מעסיק אתכם בכסף?</label>
+        <select id="pf-topic"><option value="">בחרו</option><option>לאן הכסף הולך</option><option>לחסוך יותר</option><option>דירה או משכנתא</option><option>פנסיה וביטוחים</option><option>מינוס או חובות</option><option>אחר</option></select></div>
+      <div class="row"><button class="btn" type="button" id="pf-save">שמרו</button><button class="btn ghost" type="button" id="pf-skip">דלגו</button></div>
+    </div>
   </div>`;
   box.querySelector("h2").textContent = `מעולה, ${name}. המקום שלכם שמור.`;
   box.querySelector(".done").focus();
+  setupProfile(email);
+}
+
+/* פרופיל לקוח: המכשיר מזוהה אוטומטית (בלי לשאול). שאר השדות רק אם מילאו, ואפשר לדלג */
+function setupProfile(email) {
+  const device = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? "נייד" : "מחשב";
+  const send = extra => {
+    if (!CONFIG.endpoint) return Promise.resolve();
+    const p = new URLSearchParams(Object.assign({ form: "profile", email, device, source }, extra || {}));
+    return fetch(CONFIG.endpoint, { method: "POST", body: p }).catch(() => {});
+  };
+  send();
+  const pf = document.getElementById("profile");
+  document.getElementById("pf-skip").addEventListener("click", () => pf.remove());
+  document.getElementById("pf-save").addEventListener("click", async () => {
+    const age = document.getElementById("pf-age").value, region = document.getElementById("pf-region").value, topic = document.getElementById("pf-topic").value;
+    if (!age && !region && !topic) { pf.remove(); return; }
+    await send({ age, region, topic });
+    pf.innerHTML = '<p class="thanks">תודה, זה עוזר לי להכין את המפגש.</p>';
+  });
 }
 </script>
 </body>
