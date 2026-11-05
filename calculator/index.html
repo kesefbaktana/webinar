@@ -156,6 +156,7 @@ bdi{unicode-bidi:isolate}
   <h2><span class="n">2</span>ההחזר הנוח · 3 מספרים</h2>
   <p>3 המספרים: <span class="star">★1</span> כמה נשאר בסוף חודש היום, <span class="star">★2</span> כמה נשאר בצד אחרי הקנייה, <span class="star">★3</span> מבחן החודש הרע.</p>
   <div id="res2"></div>
+  <p class="note" id="scopeNote">המחשבון נותן תמונה ראשונה, לא תוכנית. הלוואות, הכנסה משתנה או כמה יעדים ביחד - זה כבר דורש פירוק מלא<span id="scopeTail">, ואת זה עושים בעבודה אישית</span>.</p>
 
   <h2><span class="n">3</span>מה זה אומר על הדירה</h2>
   <div id="res3"></div>
@@ -548,7 +549,7 @@ function firstStatus(today, first) {
     var QS = new URLSearchParams(location.search), SRC = QS.get("src"), UNTIL = Number(QS.get("until"));
     // הגיעו מהוובינר: הכותרת מחברת למה שהובטח שם, ולא רק למשכנתא
     if (/^(gift|followup)/.test(SRC || "")) $("subLine").innerHTML = "המחשבון מהוובינר: 3 הצעדים, ואז כמה החזר נוח לכם<br>מאלישיב, איש כספים בתאגיד";
-    if (SRC === "gift") $("ctaCall").style.display = "none";
+    if (SRC === "gift") { $("ctaCall").style.display = "none"; $("scopeTail").style.display = "none"; }
     // רק עד שהפיילוט נסגר. אחרי זה - ההזמנה הרגילה
     if (SRC === "followup" && UNTIL && Date.now() < UNTIL) $("ctaCall").innerHTML = 'רוצים לעבור על זה ביחד? <a class="ig" href="../pilot/?src=followup">השאירו פרטים לשיחת היכרות</a> - 20 דקות, בלי התחייבות.';
   } catch (err) {}
